@@ -1,14 +1,38 @@
 version: '3.8'
 
 services:
-    php-web:
-        image: php:8.0-fpm-buster
-        volumes:
-            - .:/var/www
+  php-web:
+    build:
+      context: .
+      dockerfile: docker/php-web/Dockerfile
+    volumes:
+      - .:/var/www
 
-    nginx:
-        image: nginx:1.20
-        ports:
-            - "8080:80"
-        volumes:
-            -
+  nginx:
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www
+
+  mariadb:
+    image: mariadb:10.6-focal
+    volumes:
+      - "db-data:/var/lib/mysql"
+    environment:
+      MARIADB_ROOT_PASSWORD: "1234"
+      MARIADB_DATABASE: news_articles
+
+  pma:
+    image: phpmyadmin:5.1
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: mariadb
+      PMA_PORT: 3306
+
+
+volumes:
+  db-data:
