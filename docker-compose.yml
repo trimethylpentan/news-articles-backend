@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+    php-web:
+        image: php:8.0-fpm-buster
+        volumes:
+            - .:/var/www
+
+    nginx:
+        image: nginx:1.20
+        ports:
+            - "8080:80"
+        volumes:
+            -
