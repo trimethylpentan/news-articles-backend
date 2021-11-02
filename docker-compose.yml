@@ -7,6 +7,13 @@ services:
       dockerfile: docker/php-web/Dockerfile
     volumes:
       - .:/var/www
+    environment:
+      # TODO: User ändern
+      MYSQL_HOSTNAME: mariadb
+      MYSQL_USERNAME: root
+      MYSQL_PASSWORD: 1234
+      MYSQL_DATABASE: news_articles
+      MYSQL_PORT: 3306
 
   nginx:
     build:
@@ -19,6 +26,8 @@ services:
 
   mariadb:
     image: mariadb:10.6-focal
+    ports:
+      - "13306:3306"
     volumes:
       - "db-data:/var/lib/mysql"
     environment:

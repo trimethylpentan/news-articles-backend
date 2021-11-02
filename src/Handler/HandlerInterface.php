@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Trimethylpentan\NewsArticles\Common\Handler;
+namespace Trimethylpentan\NewsArticles\Handler;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
