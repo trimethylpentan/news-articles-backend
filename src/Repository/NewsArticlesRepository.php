@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Trimethylpentan\NewsArticles\Repository;
 
-use DateTimeInterface;
 use mysqli;
+use Trimethylpentan\NewsArticles\Entity\NewsArticle;
 use Trimethylpentan\NewsArticles\MySQL\Exception\MysqliException;
-use Trimethylpentan\NewsArticles\Value\NewsArticle;
+use Trimethylpentan\NewsArticles\Value\ArticleId;
 use Trimethylpentan\NewsArticles\Value\NewsArticleCollection;
 
 class NewsArticlesRepository
@@ -18,12 +18,11 @@ class NewsArticlesRepository
 
     public function createNewsArticle(NewsArticle $article): void
     {
-        // TODO: Errorhandling
         $sql = 'INSERT INTO news_articles (title, text, created_date) VALUES (?, ?, ?)';
         $statement = $this->mysqli->prepare($sql);
         
-        $title = $article->getTitle();
-        $text = $article->getText();
+        $title = $article->getTitle()->asString();
+        $text = $article->getText()->asString();
         $createdDate = $article->getCreatedDate()->format('Y-m-d H:i:s');
         $statement->bind_param('sss', $title, $text, $createdDate);
         if (!$statement->execute()) {
@@ -43,28 +42,30 @@ class NewsArticlesRepository
         return NewsArticleCollection::createFromArray($newsArticles);
     }
 
-    public function getNewsArticleForId(int $articleId): ?NewsArticle
+    public function getNewsArticleForId(ArticleId $articleId): ?NewsArticle
     {
+        $boundArticleId = $articleId->asInt();
         $sql = 'SELECT * FROM news_articles WHERE `id` = ?';
         $statement = $this->mysqli->prepare($sql);
-        $statement->bind_param('i', $articleId);
-        $statement->bind_result($row);
+        $statement->bind_param('i', $boundArticleId);
         
         $statement->execute();
+        $row = $statement->get_result()->fetch_array();
         
-        return $statement->fetch() ? NewsArticle::fromDatabaseRow($row) : null;
+        return $row !== null ? NewsArticle::fromDatabaseRow($row) : null;
     }
 
     public function updateNewsArticle(NewsArticle $article): void
     {
-        // TODO: Errorhandling
-        $articleId = $article->getId();
-        $title     = $article->getTitle();
-        $text      = $article->getText();
+        $articleId = $article->getArticleId()?->asInt();
+        $title     = $article->getTitle()->asString();
+        $text      = $article->getText()->asString();
         
         $sql = 'UPDATE news_articles SET title = ?, text = ? WHERE `id` = ?';
         $statement = $this->mysqli->prepare($sql);
         $statement->bind_param('ssi', $title, $text, $articleId);
-        $statement->execute();
+        if (!$statement->execute()) {
+            throw new MysqliException($this->mysqli->error, $this->mysqli->errno);
+        }
     }
 }

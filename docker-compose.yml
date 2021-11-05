@@ -8,6 +8,7 @@ services:
     volumes:
       - .:/var/www
     environment:
+      APP_ENV: development
       # TODO: User ändern
       MYSQL_HOSTNAME: mariadb
       MYSQL_USERNAME: root
@@ -30,6 +31,7 @@ services:
       - "13306:3306"
     volumes:
       - "db-data:/var/lib/mysql"
+      - ".data/sql/:/docker-entrypoint-initdb.d/:ro"
     environment:
       MARIADB_ROOT_PASSWORD: "1234"
       MARIADB_DATABASE: news_articles

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Trimethylpentan\NewsArticles\Handler;
 
-use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Response;
+use Slim\Http\ServerRequest;
 use Trimethylpentan\NewsArticles\Repository\NewsArticlesRepository;
 
 class ListNewsArticlesHandler implements HandlerInterface
@@ -15,11 +15,10 @@ class ListNewsArticlesHandler implements HandlerInterface
         private NewsArticlesRepository $newsArticlesRepository,
     ){}
 
-    public function __invoke(RequestInterface $request, ResponseInterface $response, array $params): ResponseInterface
+    public function __invoke(ServerRequest $request, Response $response, array $params): ResponseInterface
     {
         $newsArticles = $this->newsArticlesRepository->getNewsArticles();
         
-        /** @var Response $response */
         return $response->withJson([
             'news-articles' => $newsArticles
         ]);

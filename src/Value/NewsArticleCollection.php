@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace Trimethylpentan\NewsArticles\Value;
 
 use IteratorAggregate;
+use JetBrains\PhpStorm\Immutable;
 use JsonSerializable;
+use Trimethylpentan\NewsArticles\Entity\NewsArticle;
 
+#[Immutable]
 final class NewsArticleCollection implements IteratorAggregate, JsonSerializable
 {
     private array $newsArticles;

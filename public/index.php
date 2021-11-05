@@ -9,6 +9,8 @@ use Trimethylpentan\NewsArticles\ApplicationConfig;
 
 require __DIR__ . '/../vendor/autoload.php';
 
+define('APP_ENV', getenv('APP_ENV'));
+
 // Instantiate PHP-DI ContainerBuilder
 $containerBuilder = new ContainerBuilder();
 $containerBuilder->useAutowiring(true);

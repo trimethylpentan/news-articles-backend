@@ -4,34 +4,43 @@ declare(strict_types=1);
 
 namespace Trimethylpentan\NewsArticles\Handler;
 
-use DateTimeImmutable;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Response;
 use Slim\Http\ServerRequest;
-use Trimethylpentan\NewsArticles\Entity\NewsArticle;
 use Trimethylpentan\NewsArticles\MySQL\Exception\MysqliException;
 use Trimethylpentan\NewsArticles\Repository\NewsArticlesRepository;
+use Trimethylpentan\NewsArticles\Value\ArticleId;
 use Trimethylpentan\NewsArticles\Value\Text;
 use Trimethylpentan\NewsArticles\Value\Title;
 
-class CreateNewsArticleHandler implements HandlerInterface
+class EditNewsArticleHandler implements HandlerInterface
 {
     public function __construct(
-        private NewsArticlesRepository $newsArticlesRepository,
-    ) {}
+        private NewsArticlesRepository $articlesRepository,
+    ){}
 
     public function __invoke(ServerRequest $request, Response $response, array $params): ResponseInterface
     {
-        $body = $request->getParsedBody();
-        
-        $title = Title::fromString($body['title']);
-        $text  = Text::fromString($body['text']);
-        
-        $newsArticle = NewsArticle::createNew($title, $text, new DateTimeImmutable());
-        try {
-            $this->newsArticlesRepository->createNewsArticle($newsArticle);
+        $body      = $request->getParsedBody();
+        $articleId = ArticleId::fromInt((int)$body['id']);
+        $title     = Title::fromString($body['title']);
+        $text      = Text::fromString($body['text']);
+
+        $newsArticle = $this->articlesRepository->getNewsArticleForId($articleId);
+
+        if ($newsArticle === null) {
             return $response->withJson([
-                'created' => true,
+                'success' => false,
+                'error'   => sprintf('Konnte den News-Artikel mit der id "%s" nicht finden', $articleId),
+            ]);
+        }
+
+        try {
+            $newsArticle->setText($text);
+            $newsArticle->setTitle($title);
+            $this->articlesRepository->updateNewsArticle($newsArticle);
+            return $response->withJson([
+                'success' => true,
             ]);
         } catch (MysqliException $exception) {
             // Den Fehler nur auf dev ausgeben, damit im Live-System keine Details zu Fehlern angezeigt werden
@@ -41,10 +50,10 @@ class CreateNewsArticleHandler implements HandlerInterface
                     'error'   => $exception->getMessage(),
                 ]);
             }
-            
+
             return $response->withJson([
-                'success' => 'false',
-                'error'   => 'Es ist ein Fehler beim Erstellen des News-Artikel aufgetreten',
+                'success' => false,
+                'error'   => sprintf('Konnte den News-Artikel mit der id "%s" nicht aktualisieren', $articleId),
             ]);
         }
     }
