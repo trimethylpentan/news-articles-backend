@@ -29,8 +29,12 @@ final class NewsArticleCollection implements IteratorAggregate, JsonSerializable
         yield from $this->newsArticles;
     }
 
+    /*
+     * jsonSerialize wird automatisch durch json_encode aufgerufen, sodass dieses Objekt direkt in die JSON-Response
+     * gegeben werden kann
+     */
     public function jsonSerialize(): array
     {
-        return array_map(static fn (NewsArticle $article) => $article->asArray(), $this->newsArticles);
+        return array_map(static fn (NewsArticle $article) => $article->asShortenedArray(), $this->newsArticles);
     }
 }

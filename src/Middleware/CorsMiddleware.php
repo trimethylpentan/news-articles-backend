@@ -10,6 +10,10 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Slim\Routing\RouteContext;
 
+/*
+ * Diese Middleware setzt die für CORS benötigten Header, damit das JS im Frontend auf die Backend-Routen über
+ * XHR-Requests zugreifen kann
+ */
 class CorsMiddleware implements MiddlewareInterface
 {
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface

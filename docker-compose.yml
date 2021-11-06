@@ -16,7 +16,7 @@ services:
       MYSQL_DATABASE: news_articles
       MYSQL_PORT: 3306
 
-  nginx:
+  nginx-backend:
     build:
       context: ./docker/nginx
       dockerfile: Dockerfile
@@ -43,7 +43,6 @@ services:
     environment:
       PMA_HOST: mariadb
       PMA_PORT: 3306
-
 
 volumes:
   db-data:

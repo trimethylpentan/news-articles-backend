@@ -13,6 +13,8 @@ use Trimethylpentan\NewsArticles\Value\Title;
 
 class NewsArticle
 {
+    private const PREVIEW_MAX_CHAR_COUNT = 300;
+    
     private function __construct(
         private ?ArticleId        $articleId,
         private Title             $title,
@@ -83,5 +85,30 @@ class NewsArticle
             'text'        => $this->text->asString(),
             'createdDate' => $this->createdDate->format(DateTimeInterface::ATOM),
         ];
+    }
+
+    #[ArrayShape([
+        'id'          => 'int|null',
+        'title'       => 'string',
+        'text'        => 'string',
+        'createdDate' => 'string',
+    ])]
+    public function asShortenedArray(): array
+    {
+        return [
+            'id'          => $this->articleId->asInt(),
+            'title'       => $this->title->asString(),
+            'text'        => $this->shortenText($this->text->asString()),
+            'createdDate' => $this->createdDate->format(DateTimeInterface::ATOM),
+        ];
+    }
+
+    private function shortenText(string $text): string
+    {
+        if (strlen($text) <= self::PREVIEW_MAX_CHAR_COUNT) {
+            return $text;
+        }
+        
+        return substr($text, 0, self::PREVIEW_MAX_CHAR_COUNT) . '...';
     }
 }
