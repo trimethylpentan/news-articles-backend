@@ -33,11 +33,15 @@ class NewsArticlesRepository
     public function getNewsArticles(): NewsArticleCollection
     {
         $sql = 'SELECT * FROM news_articles';
-        $statement = $this->mysqli->query($sql);
+        $result = $this->mysqli->query($sql);
+        
+        if ($result === false) {
+            throw new MysqliException($this->mysqli->error, $this->mysqli->errno);
+        }
         
         $newsArticles = array_map(
             static fn (array $row) => NewsArticle::fromDatabaseRow($row),
-            $statement->fetch_all(MYSQLI_ASSOC)
+            $result->fetch_all(MYSQLI_ASSOC)
         );
         return NewsArticleCollection::createFromArray($newsArticles);
     }

@@ -22,7 +22,7 @@ class CreateNewsArticleHandler implements HandlerInterface
 
     public function __invoke(ServerRequest $request, Response $response, array $params): ResponseInterface
     {
-        $body = $request->getParsedBody();
+        $body = json_decode($request->getBody()->getContents(), true, flags: JSON_THROW_ON_ERROR);
         
         $title = Title::fromString($body['title']);
         $text  = Text::fromString($body['text']);
@@ -31,7 +31,7 @@ class CreateNewsArticleHandler implements HandlerInterface
         try {
             $this->newsArticlesRepository->createNewsArticle($newsArticle);
             return $response->withJson([
-                'created' => true,
+                'success' => true,
             ]);
         } catch (MysqliException $exception) {
             // Den Fehler nur auf dev ausgeben, damit im Live-System keine Details zu Fehlern angezeigt werden
@@ -39,13 +39,13 @@ class CreateNewsArticleHandler implements HandlerInterface
                 return $response->withJson([
                     'success' => false,
                     'error'   => $exception->getMessage(),
-                ]);
+                ], 500);
             }
             
             return $response->withJson([
                 'success' => 'false',
                 'error'   => 'Es ist ein Fehler beim Erstellen des News-Artikel aufgetreten',
-            ]);
+            ], 500);
         }
     }
 }

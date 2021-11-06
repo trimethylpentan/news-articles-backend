@@ -21,7 +21,7 @@ class EditNewsArticleHandler implements HandlerInterface
 
     public function __invoke(ServerRequest $request, Response $response, array $params): ResponseInterface
     {
-        $body      = $request->getParsedBody();
+        $body = json_decode($request->getBody()->getContents(), true, flags: JSON_THROW_ON_ERROR);
         $articleId = ArticleId::fromInt((int)$body['id']);
         $title     = Title::fromString($body['title']);
         $text      = Text::fromString($body['text']);
@@ -32,7 +32,7 @@ class EditNewsArticleHandler implements HandlerInterface
             return $response->withJson([
                 'success' => false,
                 'error'   => sprintf('Konnte den News-Artikel mit der id "%s" nicht finden', $articleId),
-            ]);
+            ], 404);
         }
 
         try {
@@ -48,13 +48,13 @@ class EditNewsArticleHandler implements HandlerInterface
                 return $response->withJson([
                     'success' => false,
                     'error'   => $exception->getMessage(),
-                ]);
+                ], 500);
             }
 
             return $response->withJson([
                 'success' => false,
                 'error'   => sprintf('Konnte den News-Artikel mit der id "%s" nicht aktualisieren', $articleId),
-            ]);
+            ], 500);
         }
     }
 }
