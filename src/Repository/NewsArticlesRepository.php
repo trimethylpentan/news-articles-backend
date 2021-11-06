@@ -72,4 +72,16 @@ class NewsArticlesRepository
             throw new MysqliException($this->mysqli->error, $this->mysqli->errno);
         }
     }
+
+    public function deleteNewsArticle(ArticleId $articleId): void
+    {
+        $boundArticleId = $articleId->asInt();
+        
+        $sql = 'DELETE FROM news_articles WHERE `id` = ?';
+        $statement = $this->mysqli->prepare($sql);
+        $statement->bind_param('i', $boundArticleId);
+        if (!$statement->execute()) {
+            throw new MysqliException($this->mysqli->error, $this->mysqli->errno);
+        }
+    }
 }

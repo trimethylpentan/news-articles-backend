@@ -4,6 +4,7 @@ declare(strict_types=1);
 use Slim\Interfaces\RouteCollectorProxyInterface as Group;
 use Slim\App;
 use Trimethylpentan\NewsArticles\Handler\CreateNewsArticleHandler;
+use Trimethylpentan\NewsArticles\Handler\DeleteNewsArticleHandler;
 use Trimethylpentan\NewsArticles\Handler\EditNewsArticleHandler;
 use Trimethylpentan\NewsArticles\Handler\GetNewsArticleHandler;
 use Trimethylpentan\NewsArticles\Handler\ListNewsArticlesHandler;
@@ -18,5 +19,6 @@ return function (App $app) {
         $group->get('/{articleId}', GetNewsArticleHandler::class);
         $group->post('/create', CreateNewsArticleHandler::class);
         $group->post('/edit', EditNewsArticleHandler::class);
+        $group->post('/delete', DeleteNewsArticleHandler::class);
     });
 };
