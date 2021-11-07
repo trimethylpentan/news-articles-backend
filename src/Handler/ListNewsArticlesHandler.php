@@ -21,6 +21,6 @@ class ListNewsArticlesHandler implements HandlerInterface
         
         return $response->withJson([
             'news-articles' => $newsArticles
-        ]);
+        ], 200);
     }
 }

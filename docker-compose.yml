@@ -9,9 +9,8 @@ services:
       - .:/var/www
     environment:
       APP_ENV: development
-      # TODO: User ändern
       MYSQL_HOSTNAME: mariadb
-      MYSQL_USERNAME: root
+      MYSQL_USERNAME: testing
       MYSQL_PASSWORD: 1234
       MYSQL_DATABASE: news_articles
       MYSQL_PORT: 3306
@@ -33,8 +32,11 @@ services:
       - "db-data:/var/lib/mysql"
       - "./data/sql/:/docker-entrypoint-initdb.d/:ro"
     environment:
-      MARIADB_ROOT_PASSWORD: "1234"
+      # Die Zugangsdaten sind nur für eine Entwicklungsumgebung gedacht. Reale Zugangsdaten sollten weder öffentlich noch so unsicher sein
+      MARIADB_ROOT_PASSWORD: 1234
       MARIADB_DATABASE: news_articles
+      MARIADB_USER: testing
+      MARIADB_PASSWORD: 1234
 
   pma:
     image: phpmyadmin:5.1

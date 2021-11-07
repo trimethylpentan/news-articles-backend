@@ -1,5 +1,5 @@
 {
-    "name": "trimethylpentan/news-articles",
+    "name": "trimethylpentan/news-articles-backend",
     "description": "Bewerbungsaufgabe Heise Webentwicklung Teil 1",
     "authors": [
         {
@@ -11,6 +11,7 @@
         "php": "^8.0",
         "ext-json": "*",
         "ext-mysqli": "*",
+        "ext-mbstring": "*",
         "monolog/monolog": "^2.2",
         "php-di/php-di": "^6.3",
         "slim/http": "^1.2",

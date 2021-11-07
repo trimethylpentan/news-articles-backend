@@ -32,18 +32,20 @@ class CreateNewsArticleHandler implements HandlerInterface
             $this->newsArticlesRepository->createNewsArticle($newsArticle);
             return $response->withJson([
                 'success' => true,
-            ]);
+            ], 200);
         } catch (MysqliException $exception) {
             // Den Fehler nur auf dev ausgeben, damit im Live-System keine Details zu Fehlern angezeigt werden
+            // @codeCoverageIgnoreStart
             if (APP_ENV === 'development') {
                 return $response->withJson([
                     'success' => false,
                     'error'   => $exception->getMessage(),
                 ], 500);
             }
-            
+            // @codeCoverageIgnoreEnd
+
             return $response->withJson([
-                'success' => 'false',
+                'success' => false,
                 'error'   => 'Es ist ein Fehler beim Erstellen des News-Artikel aufgetreten',
             ], 500);
         }

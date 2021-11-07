@@ -10,6 +10,9 @@ use Trimethylpentan\NewsArticles\MySQL\Factory\MysqliFactory;
 use function DI\env;
 use function DI\factory;
 
+/**
+ * @codeCoverageIgnore
+ */
 class ApplicationConfig extends DefinitionArray
 {
     public function __construct()

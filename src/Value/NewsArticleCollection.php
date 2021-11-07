@@ -10,6 +10,9 @@ use JsonSerializable;
 use Trimethylpentan\NewsArticles\Entity\NewsArticle;
 
 #[Immutable]
+/**
+ * @codeCoverageIgnore
+ */
 final class NewsArticleCollection implements IteratorAggregate, JsonSerializable
 {
     private array $newsArticles;

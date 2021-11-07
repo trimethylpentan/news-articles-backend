@@ -31,7 +31,7 @@ class EditNewsArticleHandler implements HandlerInterface
         if ($newsArticle === null) {
             return $response->withJson([
                 'success' => false,
-                'error'   => sprintf('Konnte den News-Artikel mit der id "%s" nicht finden', $articleId),
+                'error'   => sprintf('Konnte den News-Artikel mit der id "%d" nicht finden', $articleId->asInt()),
             ], 404);
         }
 
@@ -39,21 +39,27 @@ class EditNewsArticleHandler implements HandlerInterface
             $newsArticle->setText($text);
             $newsArticle->setTitle($title);
             $this->articlesRepository->updateNewsArticle($newsArticle);
+
             return $response->withJson([
                 'success' => true,
-            ]);
+            ], 200);
         } catch (MysqliException $exception) {
             // Den Fehler nur auf dev ausgeben, damit im Live-System keine Details zu Fehlern angezeigt werden
+            // @codeCoverageIgnoreStart
             if (APP_ENV === 'development') {
                 return $response->withJson([
                     'success' => false,
                     'error'   => $exception->getMessage(),
                 ], 500);
             }
+            // @codeCoverageIgnoreEnd
 
             return $response->withJson([
                 'success' => false,
-                'error'   => sprintf('Konnte den News-Artikel mit der id "%s" nicht aktualisieren', $articleId),
+                'error'   => sprintf(
+                    'Konnte den News-Artikel mit der id "%d" nicht aktualisieren',
+                    $articleId->asInt()
+                ),
             ], 500);
         }
     }

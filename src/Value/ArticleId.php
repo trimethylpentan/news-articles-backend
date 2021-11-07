@@ -8,6 +8,9 @@ use InvalidArgumentException;
 use JetBrains\PhpStorm\Immutable;
 
 #[Immutable]
+/**
+ * @codeCoverageIgnore
+ */
 final class ArticleId
 {
     private int $articleId;

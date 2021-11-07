@@ -7,6 +7,9 @@ namespace Trimethylpentan\NewsArticles\Value;
 use JetBrains\PhpStorm\Immutable;
 
 #[Immutable]
+/**
+ * @codeCoverageIgnore
+ */
 final class Text
 {
     private function __construct(

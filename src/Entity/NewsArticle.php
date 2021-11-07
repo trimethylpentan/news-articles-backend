@@ -105,10 +105,10 @@ class NewsArticle
 
     private function shortenText(string $text): string
     {
-        if (strlen($text) <= self::PREVIEW_MAX_CHAR_COUNT) {
+        if (mb_strlen($text) <= self::PREVIEW_MAX_CHAR_COUNT) {
             return $text;
         }
         
-        return substr($text, 0, self::PREVIEW_MAX_CHAR_COUNT) . '...';
+        return mb_substr($text, 0, self::PREVIEW_MAX_CHAR_COUNT) . '...';
     }
 }

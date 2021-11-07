@@ -28,19 +28,21 @@ class DeleteNewsArticleHandler implements HandlerInterface
             
             return $response->withJson([
                'success' => true,
-            ]);
+            ], 200);
         } catch (MysqliException $exception) {
             // Den Fehler nur auf dev ausgeben, damit im Live-System keine Details zu Fehlern angezeigt werden
+            // @codeCoverageIgnoreStart
             if (APP_ENV === 'development') {
                 return $response->withJson([
                     'success' => false,
                     'error'   => $exception->getMessage(),
                 ], 500);
             }
+            // @codeCoverageIgnoreEnd
 
             return $response->withJson([
                 'success' => false,
-                'error'   => sprintf('Konnte den News-Artikel mit der id "%s" nicht löschen', $articleId),
+                'error'   => sprintf('Konnte den News-Artikel mit der id "%s" nicht löschen', $articleId->asInt()),
             ], 500);
         }
     }

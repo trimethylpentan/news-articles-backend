@@ -8,6 +8,9 @@ use InvalidArgumentException;
 use JetBrains\PhpStorm\Immutable;
 
 #[Immutable]
+/**
+ * @codeCoverageIgnore
+ */
 final class Title
 {
     private const MAX_LENGTH = 255;
