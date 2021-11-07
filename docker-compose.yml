@@ -5,8 +5,9 @@ services:
     build:
       context: .
       dockerfile: docker/php-web/Dockerfile
-    volumes:
-      - .:/var/www
+# Zur lokalen Entwicklung können die auskommentierten Volumes einkommentiert werden.
+#    volumes:
+#      - .:/var/www/html
     environment:
       APP_ENV: development
       MYSQL_HOSTNAME: mariadb
@@ -17,12 +18,12 @@ services:
 
   nginx-backend:
     build:
-      context: ./docker/nginx
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: docker/nginx/Dockerfile
     ports:
       - "8080:80"
-    volumes:
-      - .:/var/www
+#    volumes:
+#      - .:/var/www/html
 
   mariadb:
     image: mariadb:10.6-focal

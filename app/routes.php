@@ -9,11 +9,12 @@ use Trimethylpentan\NewsArticles\Handler\EditNewsArticleHandler;
 use Trimethylpentan\NewsArticles\Handler\GetNewsArticleHandler;
 use Trimethylpentan\NewsArticles\Handler\ListNewsArticlesHandler;
 
+/*
+ * Hier werden die Routen definiert. In einer Gruppe können mehrere Routen zusammengefasst werden
+ * Alle Routen in der Gruppe sind childroutes der Gruppe.
+ * Als Callable sind die jeweiligen Handler angegeben, die dann vom Framework aufgerufen werden
+ */
 return function (App $app) {
-//    $app->options('/{routes:.*}', function (Request $request, Response $response) {
-//        // CORS Pre-Flight OPTIONS Request Handler
-//        return $response;
-//    });
     $app->group('/news-article', function (Group $group) {
         $group->get('/list', ListNewsArticlesHandler::class);
         $group->get('/{articleId}', GetNewsArticleHandler::class);

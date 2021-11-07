@@ -8,7 +8,7 @@ Die Entwicklungsumgebung besteht aus einem LEMP-Stack in Form von Docker-Contain
     auf eine explizite php-Datei gehen, auf die index.php und somit den Einstiegspunkt der Applikation weiter
 - php-fpm: Als Interpreter wird ein php-fpm der Version 8.0 verwendet. Beim Buildvorgang werden alle Abhängigkeiten automatisch über composer installiert
 - MariaDB: Als relationale Datenbank wird MariaDB verwendet. Die Datenbank, User und Passwort werden über die Environment-Variablen in der `docker-compose.yml` automatisch angelegt.
-    Beim ersten Start des Containers werden alle sql-Dateien in `data/sql` ausgeführt und so alle benötigten Tabellen erstellt
+    Beim ersten Start des Containers werden alle sql-Dateien in `data/sql` ausgeführt und so alle benötigten Tabellen und einige Beispieldaten erstellt
 
 Zur besseren Verwaltung der Datenbank steht zusätzlich ein phpmyadmin-Container zur Verfügung, welcher über Port `8081` erreichbar ist
 
