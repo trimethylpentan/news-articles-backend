@@ -30,3 +30,10 @@ auf die Datenbank kapseln.
 `Value`-Klassen dienen der [Kapselung Domänenspezifischer Werte](https://dev.to/ianrodrigues/writing-value-objects-in-php-4acg) innerhalb der Applikation (z.B. des Titels).
 Die Klassen im Ordner `Entity` stellen Entities, also Werte beinhaltende Objekte mit einem einzigartigen Identifier dar. Die Klasse `NewsArticle` dient konkret zur Repräsentation
 einer Zeile in der Datenbank.
+
+Die Konfiguration für Routen und Middleware befindet sich im Verzeichnis `app`.
+
+## Unit-Tests
+Das Projekt wird mit PHPUnit getestet. Die Unit-Tests befinden sich im Verzeichnis `tests`, welches genau so strukturiert ist wie das
+`src`-Verzeichnis.
+Die Tests können mit dem Befehl `docker-compose run --rm php-web composer test --migrate-configuration` ausgeführt werden.

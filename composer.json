@@ -36,5 +36,8 @@
         "psr-4": {
             "Trimethylpentan\\NewsArticles\\": "tests/"
         }
+    },
+    "scripts": {
+        "test": "phpdbg -qrr vendor/bin/phpunit --config phpunit.xml"
     }
 }
